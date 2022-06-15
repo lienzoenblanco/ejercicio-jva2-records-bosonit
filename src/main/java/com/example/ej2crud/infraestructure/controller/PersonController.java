@@ -1,9 +1,9 @@
-package com.example.ej2crud.controler;
+package com.example.ej2crud.infraestructure.controller;
 
-import com.example.ej2crud.entity.InputPersonDto;
-import com.example.ej2crud.entity.OutputPersonDto;
-import com.example.ej2crud.entity.ResponseDto;
-import com.example.ej2crud.service.PersonService;
+import com.example.ej2crud.application.*;
+import com.example.ej2crud.infraestructure.dto.input.InputPersonDto;
+import com.example.ej2crud.infraestructure.dto.output.OutputPersonDto;
+import com.example.ej2crud.application.dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,46 +15,59 @@ import java.util.List;
 @RequestMapping("/person")
 public class PersonController {
     @Autowired
-    private PersonService personService;
-    private ResponseDto responseDto;
-
+    private AddPersonUseCase addPersonUseCase;
     @PostMapping
     public ResponseEntity add(@RequestBody InputPersonDto inputPersonDto) {
-        ResponseDto responseDto = this.personService.add(inputPersonDto);
-        if (responseDto.getSuccess() == false) {
+        ResponseDto responseDto = this.addPersonUseCase.add(inputPersonDto);
+        if (!responseDto.getSuccess()) {
             return new ResponseEntity<>(responseDto,HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(responseDto,HttpStatus.CREATED);
     }
 
+
+    @Autowired
+    private ListPersonUseCase listPersonUseCase;
     @GetMapping
     public List<OutputPersonDto> list() {
-        return this.personService.list();
+        return this.listPersonUseCase.list();
     }
 
+
+    @Autowired
+    private ByIdPersonUseCase byIdPersonUseCase;
     @GetMapping("/{id}")
     public OutputPersonDto getById(@PathVariable int id) {
-        return this.personService.getById(id);
+        return this.byIdPersonUseCase.getById(id);
     }
 
+
+    @Autowired
+    private ByNamePersonUseCase byNamePersonUseCase;
     @GetMapping("/name/{name}")
     public List<OutputPersonDto> getByName(@PathVariable String name) {
-        return this.personService.findByName(name);
+        return this.byNamePersonUseCase.findByName(name);
     }
 
+
+    @Autowired
+    private UpdatePersonUseCase updatePersonUseCase;
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
             @RequestBody InputPersonDto person,
             @PathVariable int id
     ) {
-        if (!this.personService.update(person, id)){
+        if (!this.updatePersonUseCase.update(person, id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+
+    @Autowired
+    DeletePersonUseCase deletePersonUseCase;
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id){
-        this.personService.delete(id);
+        this.deletePersonUseCase.delete(id);
     }
 }

@@ -1,6 +1,6 @@
-package com.example.ej2crud.repository;
+package com.example.ej2crud.infraestructure.repository;
 
-import com.example.ej2crud.entity.Person;
+import com.example.ej2crud.domain.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

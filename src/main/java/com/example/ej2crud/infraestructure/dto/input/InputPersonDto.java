@@ -1,4 +1,4 @@
-package com.example.ej2crud.entity;
+package com.example.ej2crud.infraestructure.dto.input;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.example.ej2crud.entity;
+package com.example.ej2crud.domain;
 
 import lombok.Data;
 
