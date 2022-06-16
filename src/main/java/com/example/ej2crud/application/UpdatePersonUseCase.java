@@ -1,5 +1,7 @@
 package com.example.ej2crud.application;
 
+import com.example.ej2crud.application.exceptions.NotFoundException;
+import com.example.ej2crud.application.exceptions.UnprocessableException;
 import com.example.ej2crud.domain.Person;
 import com.example.ej2crud.infraestructure.dto.input.InputPersonDto;
 import com.example.ej2crud.infraestructure.repository.PersonRepository;
@@ -17,7 +19,10 @@ public class UpdatePersonUseCase extends PersonUseCase{
     public Boolean update(InputPersonDto inputPersonDto, int id) {
         List<Person> personList = this.personRepository.findById(id);
         if (personList == null){
-            return false;
+            throw new NotFoundException("El id no existe");
+        }
+        if (inputPersonDto.getUser() == null){
+            throw new UnprocessableException("El usuario no puede ser nulo");
         }
         Person person = personList.get(0);
         person.setUser(inputPersonDto.getUser());

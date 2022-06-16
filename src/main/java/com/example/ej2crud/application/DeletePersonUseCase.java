@@ -1,6 +1,8 @@
 package com.example.ej2crud.application;
 
+import com.example.ej2crud.application.exceptions.NotFoundException;
 import com.example.ej2crud.infraestructure.repository.PersonRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +13,10 @@ public class DeletePersonUseCase extends PersonUseCase{
     }
 
     public void delete(int id) {
-        this.personRepository.deleteById(id);
+        try {
+            this.personRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new NotFoundException("El id no existe");
+        }
     }
 }

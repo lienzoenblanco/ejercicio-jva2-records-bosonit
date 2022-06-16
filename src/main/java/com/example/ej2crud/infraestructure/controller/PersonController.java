@@ -1,7 +1,9 @@
 package com.example.ej2crud.infraestructure.controller;
 
 import com.example.ej2crud.application.*;
+import com.example.ej2crud.application.exceptions.NotFoundException;
 import com.example.ej2crud.infraestructure.dto.input.InputPersonDto;
+import com.example.ej2crud.infraestructure.dto.output.OutputCustomErrorDto;
 import com.example.ej2crud.infraestructure.dto.output.OutputPersonDto;
 import com.example.ej2crud.application.dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,8 +40,14 @@ public class PersonController {
     @Autowired
     private ByIdPersonUseCase byIdPersonUseCase;
     @GetMapping("/{id}")
-    public OutputPersonDto getById(@PathVariable int id) {
-        return this.byIdPersonUseCase.getById(id);
+    public ResponseEntity getById(@PathVariable int id) {
+        try{
+            OutputPersonDto output = this.byIdPersonUseCase.getById(id);
+            return new ResponseEntity<OutputPersonDto>(output, HttpStatus.OK);
+        } catch (NotFoundException exception) {
+            OutputCustomErrorDto error = new OutputCustomErrorDto(new Date(), HttpStatus.NOT_FOUND.value(), exception.getMessage());
+            return new ResponseEntity<OutputCustomErrorDto>(error, HttpStatus.NOT_FOUND);
+        }
     }
 
 

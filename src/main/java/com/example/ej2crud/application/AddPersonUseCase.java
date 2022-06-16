@@ -1,6 +1,7 @@
 package com.example.ej2crud.application;
 
 import com.example.ej2crud.application.dto.ResponseDto;
+import com.example.ej2crud.application.exceptions.UnprocessableException;
 import com.example.ej2crud.domain.Person;
 import com.example.ej2crud.infraestructure.dto.input.InputPersonDto;
 import com.example.ej2crud.infraestructure.repository.PersonRepository;
@@ -15,9 +16,9 @@ public class AddPersonUseCase extends PersonUseCase{
 
     public ResponseDto add(InputPersonDto inputPersonDto) {
         if (inputPersonDto.getUser() == null) {
-            return new ResponseDto(false,"El usuario no puede ser nulo");
+            throw new UnprocessableException("El usuario no puede ser nulo");
         } else if (inputPersonDto.getUser().length() > 10){
-            return new ResponseDto(false, "La longitud del campo usuario no puede ser superior a 10 caracteres");
+            throw new UnprocessableException("La longitud del campo usuario no puede ser superior a 10 caracteres");
         }
         Person person = new Person();
         person.setUser(inputPersonDto.getUser());

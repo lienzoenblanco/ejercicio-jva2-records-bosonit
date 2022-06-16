@@ -1,5 +1,6 @@
 package com.example.ej2crud.application;
 
+import com.example.ej2crud.application.exceptions.NotFoundException;
 import com.example.ej2crud.domain.Person;
 import com.example.ej2crud.infraestructure.dto.output.OutputPersonDto;
 import com.example.ej2crud.infraestructure.repository.PersonRepository;
@@ -15,6 +16,9 @@ public class ByIdPersonUseCase extends PersonUseCase {
     }
     public OutputPersonDto getById(int id) {
         List<Person> personList = this.personRepository.findById(id);
+        if (personList == null) {
+            throw new NotFoundException("El id no existe");
+        }
         Person person = personList.get(0);
         return this.serialize(person);
     }
