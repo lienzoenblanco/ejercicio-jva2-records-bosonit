@@ -21,20 +21,20 @@ public class UpdatePersonUseCase extends PersonUseCase{
         if (personList == null){
             throw new NotFoundException("El id no existe");
         }
-        if (inputPersonDto.getUser() == null){
+        if (inputPersonDto.user() == null){
             throw new UnprocessableException("El usuario no puede ser nulo");
         }
         Person person = personList.get(0);
-        person.setUser(inputPersonDto.getUser());
-        person.setPassword(inputPersonDto.getPassword());
-        person.setName(inputPersonDto.getName());
-        person.setSurname(inputPersonDto.getSurname());
-        person.setCompany_email(inputPersonDto.getCompany_email());
-        person.setPersonal_email(inputPersonDto.getPersonal_email());
-        person.setCity(inputPersonDto.getCity());
-        person.setActive(inputPersonDto.getActive());
-        person.setCreated_date(inputPersonDto.getCreated_date());
-        person.setImage_url(inputPersonDto.getImage_ulr());
+        person.setUser(inputPersonDto.user());
+        person.setPassword(inputPersonDto.password());
+        person.setName(inputPersonDto.name());
+        person.setSurname(inputPersonDto.surname());
+        person.setCompany_email(inputPersonDto.company_email());
+        person.setPersonal_email(inputPersonDto.personal_email());
+        person.setCity(inputPersonDto.city());
+        person.setActive(inputPersonDto.active());
+        person.setCreated_date(inputPersonDto.created_date());
+        person.setImage_url(inputPersonDto.image_url());
         this.personRepository.save(person);
         return true;
     }
